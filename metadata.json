@@ -1,0 +1,7 @@
+{
+  "name": "ระบบประเมินความพึงพอใจการอบรม & แดชบอร์ดเรียลไทม์",
+  "description": "เว็บแอปพลิเคชันเก็บความพึงพอใจของผู้เข้าอบรมผ่านมือถือแบบไม่ระบุตัวตน พร้อมแดชบอร์ดแสดงผลสดบนจอโปรเจกเตอร์ QR Code และส่งออกข้อมูลเป็น CSV",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
