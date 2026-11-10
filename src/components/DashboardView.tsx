@@ -18,13 +18,11 @@ import {
   Sparkles,
   Trash2,
   MessageSquare,
-  BarChart3,
   TrendingUp,
   Users,
   Sun,
   Moon,
   Info,
-  PieChart as PieIcon,
 } from 'lucide-react';
 import { PieChartCard } from './PieChartCard';
 
@@ -45,7 +43,6 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 }) => {
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [projectorHighContrast, setProjectorHighContrast] = useState<boolean>(false);
-  const [chartMode, setChartMode] = useState<'pie' | 'bar' | 'both'>('pie');
 
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
@@ -229,157 +226,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
         {/* Middle Main Section: 2 Columns Split (8 cols chart + 4 cols comments) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Left Column (8 cols): Real-time Charts and Breakdown */}
+          {/* Left Column (8 cols): Real-time Pastel Pie Chart */}
           <div className="lg:col-span-8 space-y-6">
-            {/* Chart Type Selector Bar */}
-            <div className="flex items-center justify-between flex-wrap gap-2">
-              <div className="flex items-center gap-1 p-1 bg-slate-800/90 rounded-xl border border-slate-700/80">
-                <button
-                  type="button"
-                  onClick={() => setChartMode('pie')}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 ${
-                    chartMode === 'pie'
-                      ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-600/30'
-                      : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  <PieIcon className="w-3.5 h-3.5" />
-                  <span>กราฟวงกลม (Pie Chart)</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setChartMode('bar')}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 ${
-                    chartMode === 'bar'
-                      ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-600/30'
-                      : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  <BarChart3 className="w-3.5 h-3.5" />
-                  <span>กราฟแท่ง (Bar Chart)</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setChartMode('both')}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 ${
-                    chartMode === 'both'
-                      ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-600/30'
-                      : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  <span>แสดงทั้ง 2 รูปแบบ</span>
-                </button>
-              </div>
-
-              <span className="text-xs text-slate-400 font-medium">
-                รูปแบบ: {chartMode === 'pie' ? 'กราฟวงกลม (Pie Chart)' : chartMode === 'bar' ? 'กราฟแท่งรายข้อ (Bar Chart)' : 'แสดงทั้งคู่'}
-              </span>
-            </div>
-
-            {/* Render Pie Chart */}
-            {(chartMode === 'pie' || chartMode === 'both') && (
-              <PieChartCard responses={responses} />
-            )}
-
-            {/* Render Bar Chart Card */}
-            {(chartMode === 'bar' || chartMode === 'both') && (
-            <div className="bg-slate-800/80 rounded-2xl p-5 sm:p-6 border border-slate-700/80 shadow-sm">
-              <div className="flex items-center justify-between mb-6 pb-3 border-b border-slate-700/80">
-                <div>
-                  <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-                    <BarChart3 className="w-5 h-5 text-indigo-400" />
-                    ผลการประเมินแยกตามรายข้อ (5 มิติ)
-                  </h2>
-                  <p className="text-xs text-slate-400 mt-0.5">
-                    แสดงคะแนนเฉลี่ย ระดับความพึงพอใจ และสัดส่วนผู้ให้คะแนน 1-5 ดาว
-                  </p>
-                </div>
-                <span className="text-xs font-mono font-medium text-slate-400 bg-slate-900 px-2.5 py-1 rounded-md border border-slate-700">
-                  สเกล 1.00 - 5.00
-                </span>
-              </div>
-
-              {analytics.totalResponses === 0 ? (
-                <div className="text-center py-16">
-                  <div className="w-16 h-16 rounded-full bg-slate-700/50 flex items-center justify-center mx-auto mb-3 text-slate-400">
-                    <BarChart3 className="w-8 h-8" />
-                  </div>
-                  <h3 className="text-sm font-semibold text-slate-300">ยังไม่มีผู้ตอบแบบสอบถาม</h3>
-                  <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
-                    กดปุ่ม &quot;QR Code ผู้เข้าอบรม&quot; เพื่อให้ผู้เข้าร่วมสแกนตอบ หรือกด &quot;+ จำลองข้อมูล 5 คน&quot; เพื่อทดสอบการขึ้นจอ
-                  </p>
-                </div>
-              ) : (
-                <div className="space-y-6">
-                  {analytics.questionsSummary.map((q) => {
-                    const percentBar = (q.mean / 5) * 100;
-                    return (
-                      <div
-                        key={q.id}
-                        className="bg-slate-900/60 rounded-xl p-4 border border-slate-700/60 space-y-3"
-                      >
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                          <div className="flex items-center gap-2.5">
-                            <span className="w-6 h-6 rounded-lg bg-indigo-600/30 text-indigo-300 font-mono text-xs font-bold flex items-center justify-center shrink-0 border border-indigo-500/30">
-                              {q.index}
-                            </span>
-                            <span className="text-sm font-semibold text-white">
-                              {q.title}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-3">
-                            <span
-                              className={`text-xs font-medium px-2.5 py-0.5 rounded-full border ${q.interpretation.badgeBg}`}
-                            >
-                              ระดับ{q.interpretation.label}
-                            </span>
-                            <div className="text-right">
-                              <span className="text-lg font-bold font-mono text-white tabular-nums">
-                                {q.mean.toFixed(2)}
-                              </span>
-                              <span className="text-xs text-slate-400 font-mono"> / 5.00</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Visual Mean Progress Bar */}
-                        <div className="w-full bg-slate-800 rounded-full h-3 overflow-hidden p-0.5">
-                          <div
-                            className="bg-gradient-to-r from-indigo-500 to-emerald-400 h-full rounded-full transition-all duration-700"
-                            style={{ width: `${percentBar}%` }}
-                          ></div>
-                        </div>
-
-                        {/* 1-5 Score Distribution Chips */}
-                        <div className="grid grid-cols-5 gap-1.5 pt-1 text-[11px] text-slate-400">
-                          {[5, 4, 3, 2, 1].map((star) => {
-                            const count = q.distribution[star] || 0;
-                            const pct = q.percentages[star] || 0;
-                            return (
-                              <div
-                                key={star}
-                                className="bg-slate-800/70 rounded-lg p-1.5 text-center border border-slate-700/40"
-                              >
-                                <div className="text-[10px] font-mono text-slate-300">
-                                  {star} ★
-                                </div>
-                                <div className="font-mono font-semibold text-white text-xs mt-0.5">
-                                  {pct}%
-                                </div>
-                                <div className="text-[9px] text-slate-500 font-mono">
-                                  ({count} คน)
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-            )}
+            <PieChartCard responses={responses} />
           </div>
 
           {/* Right Column (4 cols): Live Feedback / Comments Feed */}

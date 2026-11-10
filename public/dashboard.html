@@ -111,34 +111,21 @@
         </div>
       </div>
 
-      <!-- Main Chart Card: Pie & Bar Chart Toggle -->
+      <!-- Main Chart Card: Pastel Pie Chart Only -->
       <div class="bg-slate-800/80 rounded-2xl p-6 border border-slate-700/80 shadow-sm">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+        <div class="flex items-center justify-between gap-3 mb-4">
           <div>
-            <h2 id="chartTitle" class="text-base font-bold text-white flex items-center gap-2">
-              <span>สัดส่วนความพึงพอใจ (Pie / Donut Chart)</span>
+            <h2 class="text-base font-bold text-white flex items-center gap-2">
+              <span>สัดส่วนความพึงพอใจ (Soft Pastel Pie Chart)</span>
             </h2>
-            <p id="chartDesc" class="text-xs text-slate-400">สัดส่วนผู้ให้คะแนน 1–5 ดาว จากการประเมินของผู้เข้าอบรม</p>
+            <p class="text-xs text-slate-400">สัดส่วนผู้ให้คะแนน 1–5 ดาว (Soft Blue, Soft Pink, Butter Yellow, Sage, Choco Brown)</p>
           </div>
-          <div class="flex items-center gap-1 p-1 bg-slate-900 rounded-xl border border-slate-700/80">
-            <button id="btnPieMode" onclick="setChartType('pie')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white shadow-sm transition">
-              🥧 กราฟวงกลม (Pie)
-            </button>
-            <button id="btnBarMode" onclick="setChartType('bar')" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition">
-              📊 กราฟแท่ง (Bar)
-            </button>
-          </div>
+          <span class="text-xs font-mono text-indigo-300 bg-indigo-950/80 px-2.5 py-1 rounded-md border border-indigo-800">
+            Donut Chart
+          </span>
         </div>
-        <div class="h-72 w-full flex items-center justify-center relative">
+        <div class="h-80 w-full flex items-center justify-center relative">
           <canvas id="scoresChart"></canvas>
-        </div>
-      </div>
-
-      <!-- Question Breakdown Table -->
-      <div class="bg-slate-800/80 rounded-2xl p-5 border border-slate-700/80 shadow-sm">
-        <h3 class="text-sm font-bold text-white mb-3">สรุปผลการประเมิน 5 ด้าน</h3>
-        <div class="space-y-3" id="questionsBreakdown">
-          <!-- Populated by JavaScript -->
         </div>
       </div>
 

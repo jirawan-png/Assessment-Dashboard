@@ -20,15 +20,15 @@ import {
 interface FirebaseGuideAndCodeModalProps {
   isOpen: boolean;
   onClose: () => void;
-  initialTab?: 'code-survey' | 'code-dashboard' | 'guide' | 'settings';
+  initialTab?: 'sync-deploy' | 'code-survey' | 'code-dashboard' | 'guide' | 'settings';
 }
 
 export const FirebaseGuideAndCodeModal: React.FC<FirebaseGuideAndCodeModalProps> = ({
   isOpen,
   onClose,
-  initialTab = 'guide',
+  initialTab = 'sync-deploy',
 }) => {
-  const [activeTab, setActiveTab] = useState<'code-survey' | 'code-dashboard' | 'guide' | 'settings'>(initialTab);
+  const [activeTab, setActiveTab] = useState<'sync-deploy' | 'code-survey' | 'code-dashboard' | 'guide' | 'settings'>(initialTab);
   const [copiedSurvey, setCopiedSurvey] = useState(false);
   const [copiedDashboard, setCopiedDashboard] = useState(false);
   const [copiedRules, setCopiedRules] = useState(false);
@@ -102,6 +102,17 @@ export const FirebaseGuideAndCodeModal: React.FC<FirebaseGuideAndCodeModalProps>
         {/* Tab Navigation */}
         <div className="flex items-center gap-1 px-6 pt-3 border-b border-slate-800 bg-slate-950/40 overflow-x-auto">
           <button
+            onClick={() => setActiveTab('sync-deploy')}
+            className={`px-3.5 py-2 text-xs font-semibold rounded-t-xl transition border-b-2 flex items-center gap-1.5 whitespace-nowrap ${
+              activeTab === 'sync-deploy'
+                ? 'border-indigo-500 text-indigo-400 bg-slate-900'
+                : 'border-transparent text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <span>🚀 Sync Netlify &amp; GitHub</span>
+          </button>
+
+          <button
             onClick={() => setActiveTab('guide')}
             className={`px-3.5 py-2 text-xs font-semibold rounded-t-xl transition border-b-2 flex items-center gap-1.5 whitespace-nowrap ${
               activeTab === 'guide'
@@ -110,7 +121,7 @@ export const FirebaseGuideAndCodeModal: React.FC<FirebaseGuideAndCodeModalProps>
             }`}
           >
             <BookOpen className="w-3.5 h-3.5" />
-            <span>วิธีตั้งค่า Firebase &amp; Deploy (ทีละขั้น)</span>
+            <span>วิธีตั้งค่า Firebase (ทีละขั้น)</span>
           </button>
 
           <button
@@ -122,7 +133,7 @@ export const FirebaseGuideAndCodeModal: React.FC<FirebaseGuideAndCodeModalProps>
             }`}
           >
             <FileCode className="w-3.5 h-3.5" />
-            <span>ไฟล์ที่ 1: survey.html (หน้าตอบ)</span>
+            <span>ไฟล์ที่ 1: survey.html</span>
           </button>
 
           <button
@@ -134,7 +145,7 @@ export const FirebaseGuideAndCodeModal: React.FC<FirebaseGuideAndCodeModalProps>
             }`}
           >
             <FileCode className="w-3.5 h-3.5" />
-            <span>ไฟล์ที่ 2: dashboard.html (หน้าแดชบอร์ด)</span>
+            <span>ไฟล์ที่ 2: dashboard.html</span>
           </button>
 
           <button
@@ -146,12 +157,117 @@ export const FirebaseGuideAndCodeModal: React.FC<FirebaseGuideAndCodeModalProps>
             }`}
           >
             <Database className="w-3.5 h-3.5" />
-            <span>ทดสอบ Firebase Config ในแอปนี้</span>
+            <span>ทดสอบ Firebase Config</span>
           </button>
         </div>
 
         {/* Tab Content Area */}
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          {/* TAB: SYNC NETLIFY & GITHUB */}
+          {activeTab === 'sync-deploy' && (
+            <div className="space-y-6 text-sm text-slate-300 leading-relaxed">
+              <div className="bg-gradient-to-r from-emerald-950/80 to-slate-900 border border-emerald-500/40 rounded-2xl p-5 space-y-2">
+                <div className="flex items-center gap-2.5 text-emerald-400 font-bold text-base">
+                  <Check className="w-5 h-5 text-emerald-400" />
+                  <span>โปรเจกต์พร้อมเชื่อมต่อ Netlify และ GitHub เรียบร้อยแล้ว</span>
+                </div>
+                <p className="text-xs text-slate-300">
+                  ระบบได้คอมมิตโค้ดทั้งหมดลงใน Git และสร้างไฟล์ <code className="bg-slate-950 text-indigo-300 px-1.5 py-0.5 rounded font-mono">netlify.toml</code> พร้อมบิลด์แพ็กเกจ Production (<code className="bg-slate-950 text-indigo-300 px-1.5 py-0.5 rounded font-mono">dist</code>) ให้เรียบร้อยแล้ว
+                </p>
+              </div>
+
+              {/* Netlify Section */}
+              <div className="bg-slate-800/80 rounded-2xl p-5 border border-slate-700/80 space-y-4">
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="w-7 h-7 rounded-lg bg-teal-500 text-white font-bold text-xs flex items-center justify-center">N</span>
+                    <h3 className="text-base font-bold text-white">วิธี Deploy ขึ้น Netlify (เสร็จใน 10 วินาที)</h3>
+                  </div>
+                  <a
+                    href="https://app.netlify.com/drop"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-teal-600 hover:bg-teal-500 text-white transition flex items-center gap-1.5"
+                  >
+                    <span>ไปที่ Netlify Drop</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+
+                <div className="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-3">
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <span className="text-xs text-slate-300 font-medium">1. ดาวน์โหลดแพ็กเกจ Production ที่บิลด์แล้ว:</span>
+                    <a
+                      href="/netlify-deploy.zip"
+                      download="netlify-deploy.zip"
+                      className="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white transition flex items-center gap-1.5 shadow"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      <span>ดาวน์โหลด netlify-deploy.zip</span>
+                    </a>
+                  </div>
+                  <p className="text-xs text-slate-400">
+                    2. เปิดหน้าเว็บ <a href="https://app.netlify.com/drop" target="_blank" rel="noreferrer" className="text-teal-400 underline">app.netlify.com/drop</a> แล้วลากไฟล์ <code className="text-indigo-300 font-mono">netlify-deploy.zip</code> ไปวางในกรอบสี่เหลี่ยม
+                  </p>
+                  <p className="text-xs text-emerald-400 font-medium">
+                    ✓ Netlify จะออก URL ให้คุณทันที เช่น <code className="bg-slate-900 px-1 py-0.5 rounded text-white font-mono">https://your-workshop-app.netlify.app</code> ใช้งานได้ฟรีตลอดชีพ!
+                  </p>
+                </div>
+              </div>
+
+              {/* GitHub Section */}
+              <div className="bg-slate-800/80 rounded-2xl p-5 border border-slate-700/80 space-y-4">
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="w-7 h-7 rounded-lg bg-slate-950 text-white font-bold text-xs flex items-center justify-center border border-slate-700">GH</span>
+                    <h3 className="text-base font-bold text-white">วิธี Push ขึ้น GitHub Repository ของคุณ</h3>
+                  </div>
+                  <a
+                    href="https://github.com/new"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-700 hover:bg-slate-600 text-white transition flex items-center gap-1.5"
+                  >
+                    <span>สร้าง Repo บน GitHub</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+
+                <p className="text-xs text-slate-300">
+                  เนื่องจากเพื่อความปลอดภัยของบัญชีผู้ใช้ ระบบจะไม่เก็บรหัสผ่านหรือ GitHub Token ส่วนตัวของคุณไว้ ให้คุณเปิด Terminal หรือ Git Bash ในเครื่องแล้วรันคำสั่ง 3 บรรทัดนี้เพื่อ Push ได้ทันที:
+                </p>
+
+                <div className="relative">
+                  <pre className="bg-slate-950 p-4 rounded-xl text-xs font-mono text-emerald-400 overflow-x-auto border border-slate-800 leading-relaxed">
+{`# 1. เชื่อมต่อไปยัง GitHub Repo ของคุณ (เปลี่ยน YOUR_USERNAME และ YOUR_REPO)
+git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git
+
+# 2. ตั้งชื่อกิ่งเป็น main
+git branch -M main
+
+# 3. Push โค้ดขึ้น GitHub
+git push -u origin main`}
+                  </pre>
+                  <button
+                    onClick={() => {
+                      const text = `git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO.git\ngit branch -M main\ngit push -u origin main`;
+                      navigator.clipboard.writeText(text);
+                      alert('คัดลอกคำสั่ง Git เรียบร้อยแล้ว!');
+                    }}
+                    className="px-2.5 py-1 rounded-md text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition flex items-center gap-1 mt-2"
+                  >
+                    <Copy className="w-3 h-3" />
+                    <span>คัดลอกคำสั่ง Git</span>
+                  </button>
+                </div>
+
+                <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800 text-xs text-slate-400">
+                  💡 <strong>Tip เชื่อม Netlify อัตโนมัติ:</strong> เมื่อคุณ Push ขึ้น GitHub แล้ว คุณสามารถกด <strong>&quot;Import from Git&quot;</strong> บน Netlify เพื่อให้ Netlify ดีพลอยแอปเวอร์ชันใหม่ให้อัตโนมัติทุกครั้งที่คุณอัปเดตโค้ด!
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* TAB 1: GUIDE */}
           {activeTab === 'guide' && (
             <div className="space-y-6 text-sm text-slate-300 leading-relaxed">

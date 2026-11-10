@@ -28,7 +28,7 @@ export default function App() {
   const [analytics, setAnalytics] = useState<SurveyAnalytics>(() => computeAnalytics([]));
   const [showQRModal, setShowQRModal] = useState<boolean>(false);
   const [showFirebaseModal, setShowFirebaseModal] = useState<boolean>(false);
-  const [firebaseModalTab, setFirebaseModalTab] = useState<'code-survey' | 'code-dashboard' | 'guide' | 'settings'>('guide');
+  const [firebaseModalTab, setFirebaseModalTab] = useState<'sync-deploy' | 'code-survey' | 'code-dashboard' | 'guide' | 'settings'>('sync-deploy');
 
   // Listen to responses in real-time (cross-tab sync + localStorage + Firebase)
   useEffect(() => {
@@ -49,7 +49,7 @@ export default function App() {
     return () => unsubscribe();
   }, []);
 
-  const openFirebaseWithTab = (tab: 'code-survey' | 'code-dashboard' | 'guide' | 'settings') => {
+  const openFirebaseWithTab = (tab: 'sync-deploy' | 'code-survey' | 'code-dashboard' | 'guide' | 'settings') => {
     setFirebaseModalTab(tab);
     setShowFirebaseModal(true);
   };
@@ -100,6 +100,13 @@ export default function App() {
           >
             <QrCode className="w-3.5 h-3.5" />
             <span>QR Code</span>
+          </button>
+
+          <button
+            onClick={() => openFirebaseWithTab('sync-deploy')}
+            className="px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-400 hover:text-emerald-300 bg-emerald-950/50 border border-emerald-800/80 whitespace-nowrap shrink-0 transition flex items-center gap-1.5"
+          >
+            <span>🚀 Sync Netlify &amp; GitHub</span>
           </button>
 
           <button
